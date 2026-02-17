@@ -1,0 +1,5 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Nothing to solve - this challenge just verifies the environment
+kubectl cluster-info

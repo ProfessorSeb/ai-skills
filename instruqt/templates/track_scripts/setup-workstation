@@ -1,0 +1,43 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Wait for Instruqt bootstrap to complete
+while [ ! -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do
+    echo "Waiting for Instruqt to finish booting the VM"
+    sleep 1
+done
+
+# ===== Install tools =====
+snap install kubectl --classic 2>/dev/null || true
+snap install helm --classic 2>/dev/null || true
+
+# Install kind
+curl -sL https://kind.sigs.k8s.io/dl/latest/linux-amd64 -o /usr/local/bin/kind
+chmod +x /usr/local/bin/kind
+
+# ===== Create Kubernetes cluster =====
+cat <<EOF | kind create cluster --config=-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+  - containerPort: 443
+    hostPort: 443
+EOF
+
+# Wait for cluster to be ready
+kubectl wait --for=condition=Ready nodes --all --timeout=120s
+kubectl wait --for=condition=Ready pods --all -n kube-system --timeout=120s
+
+# ===== Install additional components =====
+# Example: Install Gateway API CRDs
+# kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
+
+# ===== Clone lab files =====
+mkdir -p /root/lab
+# git clone https://github.com/my-org/lab-files /root/lab
+
+echo "Track setup complete!"

@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Verify the cluster is running
+if ! kubectl cluster-info &>/dev/null; then
+    fail-message "Kubernetes cluster is not responding. Please wait a moment and try again."
+fi

@@ -1,0 +1,31 @@
+slug: my-track-slug
+id: REPLACE_ME
+type: track
+title: "My Track Title"
+teaser: "One-line teaser shown in track listings"
+description: |-
+  Multi-line description of what learners will accomplish
+  in this hands-on lab.
+icon: https://cdn.instruqt.com/assets/templates/ubuntu.png
+tags:
+- kubernetes
+- gateway
+owner: my-team
+developers:
+- developer@example.com
+maintenance: true
+show_timer: true
+skipping_enabled: true
+timelimit: 3600
+idle_timeout: 600
+extend_ttl: 900
+lab_config:
+  sidebar_enabled: true
+  feedback_recap_enabled: true
+  feedback_tab_enabled: true
+  loadingMessages: true
+  theme:
+    name: modern-dark
+  default_layout: AssignmentRight
+  default_layout_sidebar_size: 35
+  override_challenge_layout: false

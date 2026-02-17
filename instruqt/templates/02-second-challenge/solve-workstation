@@ -1,0 +1,5 @@
+#!/bin/bash
+set -euxo pipefail
+
+kubectl apply -f /root/lab/deploy.yaml
+kubectl rollout status deployment/my-app --timeout=120s

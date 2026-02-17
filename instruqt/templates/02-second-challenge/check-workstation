@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Check deployment exists
+if ! kubectl get deployment my-app &>/dev/null; then
+    fail-message "Deployment 'my-app' not found. Did you run 'kubectl apply -f /root/lab/deploy.yaml'?"
+fi
+
+# Check pods are ready
+READY=$(kubectl get deployment my-app -o jsonpath='{.status.readyReplicas}' 2>/dev/null || echo "0")
+if [ "$READY" -lt 1 ]; then
+    fail-message "Deployment exists but no pods are ready yet. Run 'kubectl get pods' to check status."
+fi
